@@ -1,0 +1,35 @@
+name: Verify External WFSL Proof
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
+
+jobs:
+  verify-external-proof:
+    runs-on: windows-latest
+
+    steps:
+      - name: Download proof artefact from wfsl-eco-engine
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          repo: Wynergy-Fibre-Solutions/wfsl-eco-engine
+          workflow: verify-proof.yml
+          name: wfsl-proof
+          path: proof
+
+      - name: Download read-only verifier
+        uses: actions/checkout@v4
+        with:
+          repository: Wynergy-Fibre-Solutions/wfsl-eco-engine
+          path: verifier
+          sparse-checkout: |
+            release/wfsl-verify.ps1
+
+      - name: Verify external proof
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass `
+            -File verifier\release\wfsl-verify.ps1 `
+            -ProofDir ".\proof" `
+            -RequireEvidence
