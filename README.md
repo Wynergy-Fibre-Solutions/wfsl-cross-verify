@@ -1,20 +1,13 @@
-\# WFSL Cross Verification
+# WFSL Cross Verify
 
+Cross-component verification utility for WFSL governance workflows.
 
+## What it does
 
-This repository independently verifies proof artefacts produced by other
+Validates consistency between evidence, admission, and enforcement outputs.
+Designed to confirm that independent WFSL guards agree on outcomes.
 
-WFSL repositories.
+## How to run
 
-
-
-It downloads the `wfsl-proof` artefact from `wfsl-eco-engine` and verifies it
-
-using the read-only WFSL verifier.
-
-
-
-No source trust. Proof only.
-
-
-
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\wfsl-cross-verify.ps1
